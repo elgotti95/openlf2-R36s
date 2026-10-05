@@ -1,0 +1,13 @@
+{
+  "options": {
+	"control": "keyboard",
+    "digipad": false,
+    "fullscreen": false,
+    "rumble": false,
+    "show_fps": false,
+    "show_gamepad": false,
+    "unlock_characters": true,
+    "upscaling_filter": "nearest"
+  },
+  "version": 1
+}

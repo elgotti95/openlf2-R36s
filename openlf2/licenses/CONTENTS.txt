@@ -1,0 +1,10 @@
+OpenLF2 license bundle
+
+Verbatim dependency notices:
+LICENSE-bzip2.txt: https://sourceware.org/pub/bzip2/bzip2-1.0.8.tar.gz; SHA-256 c6dbbf828498be844a89eaa3b84adbab3199e342eb5cb2ed2f0d4ba7ec0f38a3
+LICENSE-ffmpeg.txt: https://ffmpeg.org/releases/ffmpeg-7.1.5.tar.xz; SHA-256 246041b6ecf9bc32d718a62c57877c78b5eb397b6467e74ed7ae2626ab189c30
+LICENSE-ffmpeg-notes.txt: https://ffmpeg.org/releases/ffmpeg-7.1.5.tar.xz; SHA-256 cb48bf09a11f5fb576cddb0431c8f5ed0a60157a9ec942adffc13907cbe083f2
+LICENSE-libcurl.txt: https://raw.githubusercontent.com/curl/curl/curl-8_21_0/COPYING; SHA-256 82f2f4427d6545ee5aaac4f0b80428da6cc8ba41c2cf5da3a03680ec327b9681
+LICENSE-luajit.txt: https://raw.githubusercontent.com/LuaJIT/LuaJIT/c6ffc141a8762b41703f9287d63d93622a13dd8f/COPYRIGHT; SHA-256 6cda3076a8c09b31bb1f90da614ea89e7ee194589626eeac613e522849604e47
+LICENSE-openssl.txt: https://raw.githubusercontent.com/openssl/openssl/openssl-3.5.7/LICENSE.txt; SHA-256 7d5450cb2d142651b8afa315b5f238efc805dad827d91ba367d8516bc9d49e7a
+LICENSE-zlib.txt: https://raw.githubusercontent.com/madler/zlib/v1.3.2/LICENSE; SHA-256 e32ff4e00d9d94930537635291da39e7e612703334bf6fde8c7f1686fe8a45a2

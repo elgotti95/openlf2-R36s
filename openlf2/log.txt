@@ -1,0 +1,1097 @@
+SDL2 joystick dev0: name='GO-Super Gamepad' guid=1900bb3e4b4800000011000000010000 axes=4 btn=17 hat=0 gamepad=1
+Watching 'openlf2.aarch64'
+Game prefix 'openlf2'
+Recorded 1 existing controllers
+Running in Fake Keyboard mode
+Joystick 0 has game controller name 'GO-Super Gamepad': 10 opened.
+down -> pressed
+found stack[0] -> down
+PRESSED 'down' -> 'down'
+RELEASE 'down' -> 'down'
+relative mouse move -1 0
+relative mouse move -2 0
+relative mouse move -4 0
+relative mouse move -8 0
+relative mouse move -8 0
+relative mouse move -8 0
+relative mouse move -8 0
+relative mouse move -8 0
+relative mouse move -8 0
+relative mouse move -8 0
+relative mouse move -8 0
+relative mouse move -8 0
+relative mouse move -8 0
+relative mouse move -8 0
+relative mouse move -8 0
+relative mouse move -8 0
+relative mouse move -8 0
+relative mouse move -8 2
+relative mouse move -8 3
+relative mouse move -8 5
+relative mouse move -8 8
+relative mouse move -8 8
+left_analog_left -> pressed
+found stack[0] -> left_analog_left
+PRESSED 'left_analog_left' -> 'left'
+relative mouse move -7 8
+left_analog_down -> pressed
+found stack[0] -> left_analog_down
+PRESSED 'left_analog_down' -> 'down'
+left_analog_down -> pressed
+PRESSED 'left_analog_down' -> 'down'
+relative mouse move -2 8
+relative mouse move 0 7
+relative mouse move 0 7
+relative mouse move 1 0
+relative mouse move 2 0
+relative mouse move 4 0
+RELEASE 'left_analog_down' -> 'down'
+relative mouse move 6 0
+relative mouse move 7 -2
+relative mouse move 6 -3
+relative mouse move 7 -5
+relative mouse move 7 -8
+relative mouse move 5 -5
+left_analog_up -> pressed
+found stack[0] -> left_analog_up
+PRESSED 'left_analog_up' -> 'up'
+relative mouse move 3 -2
+relative mouse move 2 -8
+relative mouse move 0 -8
+relative mouse move 0 -8
+relative mouse move 0 -8
+relative mouse move 0 -8
+relative mouse move -1 -5
+relative mouse move -4 -8
+RELEASE 'left_analog_left' -> 'left'
+relative mouse move -8 -8
+relative mouse move -8 -5
+left_analog_right -> pressed
+found stack[0] -> left_analog_right
+PRESSED 'left_analog_right' -> 'right'
+RELEASE 'left_analog_up' -> 'up'
+left_analog_down -> pressed
+found stack[0] -> left_analog_down
+PRESSED 'left_analog_down' -> 'down'
+left_analog_right -> pressed
+PRESSED 'left_analog_right' -> 'right'
+RELEASE 'left_analog_up' -> 'up'
+left_analog_down -> pressed
+PRESSED 'left_analog_down' -> 'down'
+left_analog_right -> pressed
+PRESSED 'left_analog_right' -> 'right'
+relative mouse move -8 -3
+RELEASE 'left_analog_down' -> 'down'
+relative mouse move -8 -2
+left_analog_down -> pressed
+found stack[0] -> left_analog_down
+PRESSED 'left_analog_down' -> 'down'
+relative mouse move -8 -2
+relative mouse move -8 0
+relative mouse move -8 0
+relative mouse move -8 0
+relative mouse move -8 0
+relative mouse move -8 0
+relative mouse move -8 1
+RELEASE 'left_analog_right' -> 'right'
+relative mouse move -8 4
+relative mouse move -6 4
+relative mouse move -1 3
+left_analog_left -> pressed
+found stack[0] -> left_analog_left
+PRESSED 'left_analog_left' -> 'left'
+left_analog_left -> pressed
+PRESSED 'left_analog_left' -> 'left'
+relative mouse move 0 1
+relative mouse move 0 1
+RELEASE 'left_analog_down' -> 'down'
+relative mouse move 2 0
+relative mouse move 4 0
+relative mouse move 6 0
+left_analog_up -> pressed
+found stack[0] -> left_analog_up
+PRESSED 'left_analog_up' -> 'up'
+left_analog_up -> pressed
+PRESSED 'left_analog_up' -> 'up'
+relative mouse move 7 0
+relative mouse move 7 0
+relative mouse move 7 0
+relative mouse move 7 0
+relative mouse move 8 -1
+relative mouse move 8 -2
+relative mouse move 8 -4
+relative mouse move 8 -5
+relative mouse move 8 -6
+relative mouse move 5 -5
+relative mouse move 3 -6
+relative mouse move 0 -8
+relative mouse move 0 -8
+RELEASE 'left_analog_left' -> 'left'
+relative mouse move 0 -8
+RELEASE 'left_analog_up' -> 'up'
+relative mouse move 0 -8
+relative mouse move 0 -8
+relative mouse move -1 -8
+relative mouse move -1 -8
+relative mouse move -1 -8
+relative mouse move 0 -2
+left_analog_left -> pressed
+found stack[0] -> left_analog_left
+PRESSED 'left_analog_left' -> 'left'
+left_analog_down -> pressed
+found stack[0] -> left_analog_down
+PRESSED 'left_analog_down' -> 'down'
+RELEASE 'left_analog_down' -> 'down'
+RELEASE 'left_analog_left' -> 'left'
+left_analog_up -> pressed
+found stack[0] -> left_analog_up
+PRESSED 'left_analog_up' -> 'up'
+left_analog_left -> pressed
+found stack[0] -> left_analog_left
+PRESSED 'left_analog_left' -> 'left'
+RELEASE 'left_analog_up' -> 'up'
+left_analog_up -> pressed
+PRESSED 'left_analog_up' -> 'up'
+left_analog_up -> pressed
+PRESSED 'left_analog_up' -> 'up'
+RELEASE 'left_analog_left' -> 'left'
+left_analog_left -> pressed
+PRESSED 'left_analog_left' -> 'left'
+left_analog_left -> pressed
+PRESSED 'left_analog_left' -> 'left'
+RELEASE 'left_analog_left' -> 'left'
+RELEASE 'left_analog_up' -> 'up'
+left_analog_up -> pressed
+PRESSED 'left_analog_up' -> 'up'
+left_analog_up -> pressed
+PRESSED 'left_analog_up' -> 'up'
+left_analog_right -> pressed
+found stack[0] -> left_analog_right
+PRESSED 'left_analog_right' -> 'right'
+RELEASE 'left_analog_up' -> 'up'
+left_analog_up -> pressed
+PRESSED 'left_analog_up' -> 'up'
+left_analog_up -> pressed
+PRESSED 'left_analog_up' -> 'up'
+left_analog_up -> pressed
+PRESSED 'left_analog_up' -> 'up'
+RELEASE 'left_analog_up' -> 'up'
+left_analog_down -> pressed
+found stack[0] -> left_analog_down
+PRESSED 'left_analog_down' -> 'down'
+RELEASE 'left_analog_down' -> 'down'
+RELEASE 'left_analog_right' -> 'right'
+up -> pressed
+found stack[0] -> up
+PRESSED 'up' -> 'up'
+RELEASE 'up' -> 'up'
+up -> pressed
+found stack[0] -> up
+PRESSED 'up' -> 'up'
+RELEASE 'up' -> 'up'
+up -> pressed
+found stack[0] -> up
+PRESSED 'up' -> 'up'
+RELEASE 'up' -> 'up'
+up -> pressed
+found stack[0] -> up
+PRESSED 'up' -> 'up'
+RELEASE 'up' -> 'up'
+up -> pressed
+found stack[0] -> up
+PRESSED 'up' -> 'up'
+RELEASE 'up' -> 'up'
+b -> pressed
+found stack[0] -> b
+PRESSED 'b' -> 'j'
+RELEASE 'b' -> 'j'
+down -> pressed
+found stack[0] -> down
+PRESSED 'down' -> 'down'
+RELEASE 'down' -> 'down'
+down -> pressed
+found stack[0] -> down
+PRESSED 'down' -> 'down'
+RELEASE 'down' -> 'down'
+a -> pressed
+found stack[0] -> a
+PRESSED 'a' -> 'a'
+RELEASE 'a' -> 'a'
+down -> pressed
+found stack[0] -> down
+PRESSED 'down' -> 'down'
+RELEASE 'down' -> 'down'
+down -> pressed
+found stack[0] -> down
+PRESSED 'down' -> 'down'
+RELEASE 'down' -> 'down'
+down -> pressed
+found stack[0] -> down
+PRESSED 'down' -> 'down'
+RELEASE 'down' -> 'down'
+down -> pressed
+found stack[0] -> down
+PRESSED 'down' -> 'down'
+RELEASE 'down' -> 'down'
+down -> pressed
+found stack[0] -> down
+PRESSED 'down' -> 'down'
+RELEASE 'down' -> 'down'
+down -> pressed
+found stack[0] -> down
+PRESSED 'down' -> 'down'
+RELEASE 'down' -> 'down'
+b -> pressed
+found stack[0] -> b
+PRESSED 'b' -> 'j'
+RELEASE 'b' -> 'j'
+a -> pressed
+found stack[0] -> a
+PRESSED 'a' -> 'a'
+RELEASE 'a' -> 'a'
+down -> pressed
+found stack[0] -> down
+PRESSED 'down' -> 'down'
+RELEASE 'down' -> 'down'
+down -> pressed
+found stack[0] -> down
+PRESSED 'down' -> 'down'
+RELEASE 'down' -> 'down'
+down -> pressed
+found stack[0] -> down
+PRESSED 'down' -> 'down'
+RELEASE 'down' -> 'down'
+down -> pressed
+found stack[0] -> down
+PRESSED 'down' -> 'down'
+RELEASE 'down' -> 'down'
+down -> pressed
+found stack[0] -> down
+PRESSED 'down' -> 'down'
+RELEASE 'down' -> 'down'
+down -> pressed
+found stack[0] -> down
+PRESSED 'down' -> 'down'
+RELEASE 'down' -> 'down'
+a -> pressed
+found stack[0] -> a
+PRESSED 'a' -> 'a'
+RELEASE 'a' -> 'a'
+a -> pressed
+found stack[0] -> a
+PRESSED 'a' -> 'a'
+RELEASE 'a' -> 'a'
+a -> pressed
+found stack[0] -> a
+PRESSED 'a' -> 'a'
+RELEASE 'a' -> 'a'
+y -> pressed
+found stack[0] -> y
+PRESSED 'y' -> 'y'
+RELEASE 'y' -> 'y'
+a -> pressed
+found stack[0] -> a
+PRESSED 'a' -> 'a'
+RELEASE 'a' -> 'a'
+a -> pressed
+found stack[0] -> a
+PRESSED 'a' -> 'a'
+RELEASE 'a' -> 'a'
+up -> pressed
+found stack[0] -> up
+PRESSED 'up' -> 'up'
+RELEASE 'up' -> 'up'
+a -> pressed
+found stack[0] -> a
+PRESSED 'a' -> 'a'
+RELEASE 'a' -> 'a'
+left_analog_right -> pressed
+found stack[0] -> left_analog_right
+PRESSED 'left_analog_right' -> 'right'
+RELEASE 'left_analog_right' -> 'right'
+left_analog_left -> pressed
+found stack[0] -> left_analog_left
+PRESSED 'left_analog_left' -> 'left'
+RELEASE 'left_analog_left' -> 'left'
+a -> pressed
+found stack[0] -> a
+PRESSED 'a' -> 'a'
+RELEASE 'a' -> 'a'
+right -> pressed
+found stack[0] -> right
+PRESSED 'right' -> 'right'
+RELEASE 'right' -> 'right'
+a -> pressed
+found stack[0] -> a
+PRESSED 'a' -> 'a'
+RELEASE 'a' -> 'a'
+left -> pressed
+found stack[0] -> left
+PRESSED 'left' -> 'left'
+RELEASE 'left' -> 'left'
+a -> pressed
+found stack[0] -> a
+PRESSED 'a' -> 'a'
+RELEASE 'a' -> 'a'
+a -> pressed
+found stack[0] -> a
+PRESSED 'a' -> 'a'
+RELEASE 'a' -> 'a'
+a -> pressed
+found stack[0] -> a
+PRESSED 'a' -> 'a'
+RELEASE 'a' -> 'a'
+up -> pressed
+found stack[0] -> up
+PRESSED 'up' -> 'up'
+RELEASE 'up' -> 'up'
+a -> pressed
+found stack[0] -> a
+PRESSED 'a' -> 'a'
+RELEASE 'a' -> 'a'
+up -> pressed
+found stack[0] -> up
+PRESSED 'up' -> 'up'
+RELEASE 'up' -> 'up'
+a -> pressed
+found stack[0] -> a
+PRESSED 'a' -> 'a'
+RELEASE 'a' -> 'a'
+up -> pressed
+found stack[0] -> up
+PRESSED 'up' -> 'up'
+RELEASE 'up' -> 'up'
+a -> pressed
+found stack[0] -> a
+PRESSED 'a' -> 'a'
+RELEASE 'a' -> 'a'
+down -> pressed
+found stack[0] -> down
+PRESSED 'down' -> 'down'
+RELEASE 'down' -> 'down'
+down -> pressed
+found stack[0] -> down
+PRESSED 'down' -> 'down'
+RELEASE 'down' -> 'down'
+down -> pressed
+found stack[0] -> down
+PRESSED 'down' -> 'down'
+RELEASE 'down' -> 'down'
+down -> pressed
+found stack[0] -> down
+PRESSED 'down' -> 'down'
+RELEASE 'down' -> 'down'
+down -> pressed
+found stack[0] -> down
+PRESSED 'down' -> 'down'
+RELEASE 'down' -> 'down'
+down -> pressed
+found stack[0] -> down
+PRESSED 'down' -> 'down'
+RELEASE 'down' -> 'down'
+right -> pressed
+found stack[0] -> right
+PRESSED 'right' -> 'right'
+RELEASE 'right' -> 'right'
+right -> pressed
+found stack[0] -> right
+PRESSED 'right' -> 'right'
+RELEASE 'right' -> 'right'
+right -> pressed
+found stack[0] -> right
+PRESSED 'right' -> 'right'
+RELEASE 'right' -> 'right'
+left -> pressed
+found stack[0] -> left
+PRESSED 'left' -> 'left'
+RELEASE 'left' -> 'left'
+down -> pressed
+found stack[0] -> down
+PRESSED 'down' -> 'down'
+RELEASE 'down' -> 'down'
+right -> pressed
+found stack[0] -> right
+PRESSED 'right' -> 'right'
+RELEASE 'right' -> 'right'
+right -> pressed
+found stack[0] -> right
+PRESSED 'right' -> 'right'
+RELEASE 'right' -> 'right'
+down -> pressed
+found stack[0] -> down
+PRESSED 'down' -> 'down'
+RELEASE 'down' -> 'down'
+a -> pressed
+found stack[0] -> a
+PRESSED 'a' -> 'a'
+RELEASE 'a' -> 'a'
+a -> pressed
+found stack[0] -> a
+PRESSED 'a' -> 'a'
+RELEASE 'a' -> 'a'
+left -> pressed
+found stack[0] -> left
+PRESSED 'left' -> 'left'
+RELEASE 'left' -> 'left'
+up -> pressed
+found stack[0] -> up
+PRESSED 'up' -> 'up'
+RELEASE 'up' -> 'up'
+down -> pressed
+found stack[0] -> down
+PRESSED 'down' -> 'down'
+RELEASE 'down' -> 'down'
+up -> pressed
+found stack[0] -> up
+PRESSED 'up' -> 'up'
+RELEASE 'up' -> 'up'
+a -> pressed
+found stack[0] -> a
+PRESSED 'a' -> 'a'
+RELEASE 'a' -> 'a'
+a -> pressed
+found stack[0] -> a
+PRESSED 'a' -> 'a'
+RELEASE 'a' -> 'a'
+down -> pressed
+found stack[0] -> down
+PRESSED 'down' -> 'down'
+RELEASE 'down' -> 'down'
+a -> pressed
+found stack[0] -> a
+PRESSED 'a' -> 'a'
+RELEASE 'a' -> 'a'
+down -> pressed
+found stack[0] -> down
+PRESSED 'down' -> 'down'
+RELEASE 'down' -> 'down'
+up -> pressed
+found stack[0] -> up
+PRESSED 'up' -> 'up'
+RELEASE 'up' -> 'up'
+a -> pressed
+found stack[0] -> a
+PRESSED 'a' -> 'a'
+left -> pressed
+found stack[0] -> left
+PRESSED 'left' -> 'left'
+RELEASE 'left' -> 'left'
+right -> pressed
+found stack[0] -> right
+PRESSED 'right' -> 'right'
+RELEASE 'right' -> 'right'
+RELEASE 'a' -> 'a'
+left -> pressed
+found stack[0] -> left
+PRESSED 'left' -> 'left'
+RELEASE 'left' -> 'left'
+a -> pressed
+found stack[0] -> a
+PRESSED 'a' -> 'a'
+RELEASE 'a' -> 'a'
+a -> pressed
+found stack[0] -> a
+PRESSED 'a' -> 'a'
+RELEASE 'a' -> 'a'
+a -> pressed
+found stack[0] -> a
+PRESSED 'a' -> 'a'
+RELEASE 'a' -> 'a'
+a -> pressed
+found stack[0] -> a
+PRESSED 'a' -> 'a'
+RELEASE 'a' -> 'a'
+a -> pressed
+found stack[0] -> a
+PRESSED 'a' -> 'a'
+RELEASE 'a' -> 'a'
+a -> pressed
+found stack[0] -> a
+PRESSED 'a' -> 'a'
+RELEASE 'a' -> 'a'
+a -> pressed
+found stack[0] -> a
+PRESSED 'a' -> 'a'
+RELEASE 'a' -> 'a'
+down -> pressed
+found stack[0] -> down
+PRESSED 'down' -> 'down'
+RELEASE 'down' -> 'down'
+a -> pressed
+found stack[0] -> a
+PRESSED 'a' -> 'a'
+RELEASE 'a' -> 'a'
+up -> pressed
+found stack[0] -> up
+PRESSED 'up' -> 'up'
+RELEASE 'up' -> 'up'
+down -> pressed
+found stack[0] -> down
+PRESSED 'down' -> 'down'
+RELEASE 'down' -> 'down'
+a -> pressed
+found stack[0] -> a
+PRESSED 'a' -> 'a'
+RELEASE 'a' -> 'a'
+a -> pressed
+found stack[0] -> a
+PRESSED 'a' -> 'a'
+up -> pressed
+found stack[0] -> up
+PRESSED 'up' -> 'up'
+RELEASE 'up' -> 'up'
+RELEASE 'a' -> 'a'
+down -> pressed
+found stack[0] -> down
+PRESSED 'down' -> 'down'
+RELEASE 'down' -> 'down'
+a -> pressed
+found stack[0] -> a
+PRESSED 'a' -> 'a'
+RELEASE 'a' -> 'a'
+up -> pressed
+found stack[0] -> up
+PRESSED 'up' -> 'up'
+RELEASE 'up' -> 'up'
+down -> pressed
+found stack[0] -> down
+PRESSED 'down' -> 'down'
+RELEASE 'down' -> 'down'
+a -> pressed
+found stack[0] -> a
+PRESSED 'a' -> 'a'
+RELEASE 'a' -> 'a'
+up -> pressed
+found stack[0] -> up
+PRESSED 'up' -> 'up'
+RELEASE 'up' -> 'up'
+down -> pressed
+found stack[0] -> down
+PRESSED 'down' -> 'down'
+RELEASE 'down' -> 'down'
+left -> pressed
+found stack[0] -> left
+PRESSED 'left' -> 'left'
+RELEASE 'left' -> 'left'
+right -> pressed
+found stack[0] -> right
+PRESSED 'right' -> 'right'
+RELEASE 'right' -> 'right'
+left -> pressed
+found stack[0] -> left
+PRESSED 'left' -> 'left'
+RELEASE 'left' -> 'left'
+b -> pressed
+found stack[0] -> b
+PRESSED 'b' -> 'j'
+RELEASE 'b' -> 'j'
+a -> pressed
+found stack[0] -> a
+PRESSED 'a' -> 'a'
+RELEASE 'a' -> 'a'
+down -> pressed
+found stack[0] -> down
+PRESSED 'down' -> 'down'
+RELEASE 'down' -> 'down'
+a -> pressed
+found stack[0] -> a
+PRESSED 'a' -> 'a'
+RELEASE 'a' -> 'a'
+a -> pressed
+found stack[0] -> a
+PRESSED 'a' -> 'a'
+RELEASE 'a' -> 'a'
+a -> pressed
+found stack[0] -> a
+PRESSED 'a' -> 'a'
+RELEASE 'a' -> 'a'
+a -> pressed
+found stack[0] -> a
+PRESSED 'a' -> 'a'
+RELEASE 'a' -> 'a'
+a -> pressed
+found stack[0] -> a
+PRESSED 'a' -> 'a'
+RELEASE 'a' -> 'a'
+a -> pressed
+found stack[0] -> a
+PRESSED 'a' -> 'a'
+RELEASE 'a' -> 'a'
+a -> pressed
+found stack[0] -> a
+PRESSED 'a' -> 'a'
+RELEASE 'a' -> 'a'
+a -> pressed
+found stack[0] -> a
+PRESSED 'a' -> 'a'
+RELEASE 'a' -> 'a'
+a -> pressed
+found stack[0] -> a
+PRESSED 'a' -> 'a'
+RELEASE 'a' -> 'a'
+a -> pressed
+found stack[0] -> a
+PRESSED 'a' -> 'a'
+RELEASE 'a' -> 'a'
+a -> pressed
+found stack[0] -> a
+PRESSED 'a' -> 'a'
+RELEASE 'a' -> 'a'
+a -> pressed
+found stack[0] -> a
+PRESSED 'a' -> 'a'
+RELEASE 'a' -> 'a'
+a -> pressed
+found stack[0] -> a
+PRESSED 'a' -> 'a'
+RELEASE 'a' -> 'a'
+a -> pressed
+found stack[0] -> a
+PRESSED 'a' -> 'a'
+RELEASE 'a' -> 'a'
+down -> pressed
+found stack[0] -> down
+PRESSED 'down' -> 'down'
+RELEASE 'down' -> 'down'
+down -> pressed
+found stack[0] -> down
+PRESSED 'down' -> 'down'
+RELEASE 'down' -> 'down'
+down -> pressed
+found stack[0] -> down
+PRESSED 'down' -> 'down'
+RELEASE 'down' -> 'down'
+down -> pressed
+found stack[0] -> down
+PRESSED 'down' -> 'down'
+RELEASE 'down' -> 'down'
+down -> pressed
+found stack[0] -> down
+PRESSED 'down' -> 'down'
+RELEASE 'down' -> 'down'
+down -> pressed
+found stack[0] -> down
+PRESSED 'down' -> 'down'
+RELEASE 'down' -> 'down'
+down -> pressed
+found stack[0] -> down
+PRESSED 'down' -> 'down'
+RELEASE 'down' -> 'down'
+a -> pressed
+found stack[0] -> a
+PRESSED 'a' -> 'a'
+RELEASE 'a' -> 'a'
+y -> pressed
+found stack[0] -> y
+PRESSED 'y' -> 'y'
+RELEASE 'y' -> 'y'
+a -> pressed
+found stack[0] -> a
+PRESSED 'a' -> 'a'
+y -> pressed
+found stack[0] -> y
+PRESSED 'y' -> 'y'
+RELEASE 'y' -> 'y'
+RELEASE 'a' -> 'a'
+r3 -> pressed
+found stack[0] -> r3
+relative mouse move 0 -1
+relative mouse move 0 -1
+relative mouse move 0 -1
+relative mouse move 0 -1
+relative mouse move 0 -1
+relative mouse move 0 -1
+left_analog_left -> pressed
+found stack[0] -> left_analog_left
+PRESSED 'left_analog_left' -> 'left'
+l3 -> pressed
+found stack[0] -> l3
+RELEASE 'left_analog_left' -> 'left'
+left_analog_left -> pressed
+found stack[0] -> left_analog_left
+PRESSED 'left_analog_left' -> 'left'
+RELEASE 'left_analog_left' -> 'left'
+b -> pressed
+found stack[0] -> b
+PRESSED 'b' -> 'j'
+RELEASE 'b' -> 'j'
+a -> pressed
+found stack[0] -> a
+PRESSED 'a' -> 'a'
+RELEASE 'a' -> 'a'
+down -> pressed
+found stack[0] -> down
+PRESSED 'down' -> 'down'
+RELEASE 'down' -> 'down'
+down -> pressed
+found stack[0] -> down
+PRESSED 'down' -> 'down'
+RELEASE 'down' -> 'down'
+down -> pressed
+found stack[0] -> down
+PRESSED 'down' -> 'down'
+RELEASE 'down' -> 'down'
+a -> pressed
+found stack[0] -> a
+PRESSED 'a' -> 'a'
+RELEASE 'a' -> 'a'
+down -> pressed
+found stack[0] -> down
+PRESSED 'down' -> 'down'
+RELEASE 'down' -> 'down'
+a -> pressed
+found stack[0] -> a
+PRESSED 'a' -> 'a'
+RELEASE 'a' -> 'a'
+down -> pressed
+found stack[0] -> down
+PRESSED 'down' -> 'down'
+RELEASE 'down' -> 'down'
+a -> pressed
+found stack[0] -> a
+PRESSED 'a' -> 'a'
+RELEASE 'a' -> 'a'
+a -> pressed
+found stack[0] -> a
+PRESSED 'a' -> 'a'
+RELEASE 'a' -> 'a'
+a -> pressed
+found stack[0] -> a
+PRESSED 'a' -> 'a'
+RELEASE 'a' -> 'a'
+up -> pressed
+found stack[0] -> up
+PRESSED 'up' -> 'up'
+RELEASE 'up' -> 'up'
+up -> pressed
+found stack[0] -> up
+PRESSED 'up' -> 'up'
+RELEASE 'up' -> 'up'
+up -> pressed
+found stack[0] -> up
+PRESSED 'up' -> 'up'
+RELEASE 'up' -> 'up'
+a -> pressed
+found stack[0] -> a
+PRESSED 'a' -> 'a'
+RELEASE 'a' -> 'a'
+down -> pressed
+found stack[0] -> down
+PRESSED 'down' -> 'down'
+RELEASE 'down' -> 'down'
+a -> pressed
+found stack[0] -> a
+PRESSED 'a' -> 'a'
+RELEASE 'a' -> 'a'
+down -> pressed
+found stack[0] -> down
+PRESSED 'down' -> 'down'
+RELEASE 'down' -> 'down'
+b -> pressed
+found stack[0] -> b
+PRESSED 'b' -> 'j'
+RELEASE 'b' -> 'j'
+down -> pressed
+found stack[0] -> down
+PRESSED 'down' -> 'down'
+RELEASE 'down' -> 'down'
+down -> pressed
+found stack[0] -> down
+PRESSED 'down' -> 'down'
+RELEASE 'down' -> 'down'
+down -> pressed
+found stack[0] -> down
+PRESSED 'down' -> 'down'
+RELEASE 'down' -> 'down'
+up -> pressed
+found stack[0] -> up
+PRESSED 'up' -> 'up'
+RELEASE 'up' -> 'up'
+a -> pressed
+found stack[0] -> a
+PRESSED 'a' -> 'a'
+RELEASE 'a' -> 'a'
+down -> pressed
+found stack[0] -> down
+PRESSED 'down' -> 'down'
+RELEASE 'down' -> 'down'
+a -> pressed
+found stack[0] -> a
+PRESSED 'a' -> 'a'
+RELEASE 'a' -> 'a'
+up -> pressed
+found stack[0] -> up
+PRESSED 'up' -> 'up'
+RELEASE 'up' -> 'up'
+a -> pressed
+found stack[0] -> a
+PRESSED 'a' -> 'a'
+RELEASE 'a' -> 'a'
+down -> pressed
+found stack[0] -> down
+PRESSED 'down' -> 'down'
+RELEASE 'down' -> 'down'
+down -> pressed
+found stack[0] -> down
+PRESSED 'down' -> 'down'
+RELEASE 'down' -> 'down'
+down -> pressed
+found stack[0] -> down
+PRESSED 'down' -> 'down'
+RELEASE 'down' -> 'down'
+down -> pressed
+found stack[0] -> down
+PRESSED 'down' -> 'down'
+RELEASE 'down' -> 'down'
+a -> pressed
+found stack[0] -> a
+PRESSED 'a' -> 'a'
+RELEASE 'a' -> 'a'
+up -> pressed
+found stack[0] -> up
+PRESSED 'up' -> 'up'
+RELEASE 'up' -> 'up'
+up -> pressed
+found stack[0] -> up
+PRESSED 'up' -> 'up'
+RELEASE 'up' -> 'up'
+up -> pressed
+found stack[0] -> up
+PRESSED 'up' -> 'up'
+RELEASE 'up' -> 'up'
+up -> pressed
+found stack[0] -> up
+PRESSED 'up' -> 'up'
+RELEASE 'up' -> 'up'
+a -> pressed
+found stack[0] -> a
+PRESSED 'a' -> 'a'
+RELEASE 'a' -> 'a'
+down -> pressed
+found stack[0] -> down
+PRESSED 'down' -> 'down'
+RELEASE 'down' -> 'down'
+down -> pressed
+found stack[0] -> down
+PRESSED 'down' -> 'down'
+RELEASE 'down' -> 'down'
+down -> pressed
+found stack[0] -> down
+PRESSED 'down' -> 'down'
+RELEASE 'down' -> 'down'
+down -> pressed
+found stack[0] -> down
+PRESSED 'down' -> 'down'
+RELEASE 'down' -> 'down'
+b -> pressed
+found stack[0] -> b
+PRESSED 'b' -> 'j'
+RELEASE 'b' -> 'j'
+a -> pressed
+found stack[0] -> a
+PRESSED 'a' -> 'a'
+RELEASE 'a' -> 'a'
+up -> pressed
+found stack[0] -> up
+PRESSED 'up' -> 'up'
+RELEASE 'up' -> 'up'
+down -> pressed
+found stack[0] -> down
+PRESSED 'down' -> 'down'
+RELEASE 'down' -> 'down'
+a -> pressed
+found stack[0] -> a
+PRESSED 'a' -> 'a'
+RELEASE 'a' -> 'a'
+a -> pressed
+found stack[0] -> a
+PRESSED 'a' -> 'a'
+RELEASE 'a' -> 'a'
+a -> pressed
+found stack[0] -> a
+PRESSED 'a' -> 'a'
+RELEASE 'a' -> 'a'
+a -> pressed
+found stack[0] -> a
+PRESSED 'a' -> 'a'
+RELEASE 'a' -> 'a'
+b -> pressed
+found stack[0] -> b
+PRESSED 'b' -> 'j'
+RELEASE 'b' -> 'j'
+left_analog_right -> pressed
+found stack[0] -> left_analog_right
+PRESSED 'left_analog_right' -> 'right'
+relative mouse move 0 -2
+relative mouse move 0 -5
+relative mouse move 0 -8
+relative mouse move 0 -8
+relative mouse move 0 -8
+relative mouse move 0 -8
+relative mouse move 0 -8
+relative mouse move 0 -8
+left_analog_down -> pressed
+found stack[0] -> left_analog_down
+PRESSED 'left_analog_down' -> 'down'
+relative mouse move 0 -8
+relative mouse move -1 -8
+relative mouse move -2 -8
+RELEASE 'left_analog_right' -> 'right'
+relative mouse move -6 0
+left_analog_left -> pressed
+found stack[0] -> left_analog_left
+PRESSED 'left_analog_left' -> 'left'
+relative mouse move -8 0
+relative mouse move -8 8
+relative mouse move -7 8
+RELEASE 'left_analog_down' -> 'down'
+relative mouse move -2 8
+relative mouse move 0 7
+left_analog_up -> pressed
+found stack[0] -> left_analog_up
+PRESSED 'left_analog_up' -> 'up'
+left_analog_up -> pressed
+PRESSED 'left_analog_up' -> 'up'
+relative mouse move 0 7
+relative mouse move 3 8
+relative mouse move 7 8
+relative mouse move 8 8
+relative mouse move 8 6
+relative mouse move 8 3
+relative mouse move 7 0
+relative mouse move 7 0
+relative mouse move 7 0
+relative mouse move 0 -1
+RELEASE 'left_analog_left' -> 'left'
+relative mouse move 8 -2
+relative mouse move 8 -3
+left_analog_right -> pressed
+found stack[0] -> left_analog_right
+PRESSED 'left_analog_right' -> 'right'
+relative mouse move 7 -5
+relative mouse move 3 -5
+relative mouse move 0 -5
+relative mouse move -7 -5
+relative mouse move -8 -6
+relative mouse move -8 -3
+RELEASE 'left_analog_up' -> 'up'
+relative mouse move -8 -2
+relative mouse move -8 -1
+relative mouse move -8 0
+relative mouse move -8 0
+left_analog_down -> pressed
+found stack[0] -> left_analog_down
+PRESSED 'left_analog_down' -> 'down'
+relative mouse move -8 0
+relative mouse move -8 0
+relative mouse move -8 0
+relative mouse move -8 0
+relative mouse move -8 0
+relative mouse move -1 0
+relative mouse move 2 0
+relative mouse move 8 1
+relative mouse move 8 1
+relative mouse move 8 1
+relative mouse move 8 1
+RELEASE 'left_analog_right' -> 'right'
+left_analog_right -> pressed
+PRESSED 'left_analog_right' -> 'right'
+relative mouse move 8 1
+left_analog_right -> pressed
+PRESSED 'left_analog_right' -> 'right'
+left_analog_right -> pressed
+PRESSED 'left_analog_right' -> 'right'
+RELEASE 'left_analog_down' -> 'down'
+left_analog_right -> pressed
+PRESSED 'left_analog_right' -> 'right'
+RELEASE 'left_analog_down' -> 'down'
+relative mouse move 8 1
+relative mouse move 7 0
+relative mouse move 7 0
+relative mouse move 7 0
+relative mouse move 7 0
+relative mouse move 7 0
+left_analog_down -> pressed
+found stack[0] -> left_analog_down
+PRESSED 'left_analog_down' -> 'down'
+left_analog_down -> pressed
+PRESSED 'left_analog_down' -> 'down'
+left_analog_left -> pressed
+found stack[0] -> left_analog_left
+PRESSED 'left_analog_left' -> 'left'
+RELEASE 'left_analog_down' -> 'down'
+RELEASE 'left_analog_left' -> 'left'
+a -> pressed
+found stack[0] -> a
+PRESSED 'a' -> 'a'
+RELEASE 'a' -> 'a'
+down -> pressed
+found stack[0] -> down
+PRESSED 'down' -> 'down'
+RELEASE 'down' -> 'down'
+up -> pressed
+found stack[0] -> up
+PRESSED 'up' -> 'up'
+RELEASE 'up' -> 'up'
+r1 -> pressed
+found stack[0] -> r1
+up -> pressed
+found stack[0] -> up
+PRESSED 'up' -> 'up'
+RELEASE 'up' -> 'up'
+r1 -> pressed
+found stack[0] -> r1
+l1 -> pressed
+found stack[0] -> l1
+l2 -> pressed
+found stack[0] -> l2
+r1 -> pressed
+found stack[0] -> r1
+r2 -> pressed
+found stack[0] -> r2
+left -> pressed
+found stack[0] -> left
+PRESSED 'left' -> 'left'
+up -> pressed
+found stack[0] -> up
+PRESSED 'up' -> 'up'
+RELEASE 'up' -> 'up'
+RELEASE 'left' -> 'left'
+down -> pressed
+found stack[0] -> down
+PRESSED 'down' -> 'down'
+right -> pressed
+found stack[0] -> right
+PRESSED 'right' -> 'right'
+left_analog_left -> pressed
+found stack[0] -> left_analog_left
+PRESSED 'left_analog_left' -> 'left'
+RELEASE 'left_analog_left' -> 'left'
+RELEASE 'down' -> 'down'
+RELEASE 'right' -> 'right'
+up -> pressed
+found stack[0] -> up
+PRESSED 'up' -> 'up'
+left -> pressed
+found stack[0] -> left
+PRESSED 'left' -> 'left'
+l1 -> pressed
+found stack[0] -> l1
+RELEASE 'up' -> 'up'
+RELEASE 'left' -> 'left'
+r2 -> pressed
+found stack[0] -> r2
+y -> pressed
+found stack[0] -> y
+PRESSED 'y' -> 'y'
+RELEASE 'y' -> 'y'
+x -> pressed
+found stack[0] -> x
+PRESSED 'x' -> 'd'
+RELEASE 'x' -> 'd'
+x -> pressRenderer: opengles2 (xBRZ upscaling available)
+Keys come from the Control Settings (/roms/ports/openlf2/conf/config.json, else data/control.txt); F1-F9 are the original's function keys.
+Close the window to exit.
+/opt/system/Tools/PortMaster/funcs.txt: line 140:  7095 Killed                  $ESUDO pkill -9 -f gptokeyb
+/opt/system/Tools/PortMaster/funcs.txt: line 140:  3574 Killed                  /opt/system/Tools/PortMaster/gptokeyb2 "openlf2.${DEVICE_ARCH}" -c "$GAMEDIR/controls.gptk" -k "openlf2.${DEVICE_ARCH}"
+/opt/system/Tools/PortMaster/funcs.txt: line 140:  7102 Killed                  $ESUDO pkill -9 -f gptokeyb2
