@@ -1,3 +1,0 @@
-/* Generated from wmd_inspectors.lua. */
-static const char wmd_inspectors_script[] = "\n"
-@WMD_FIX_SOURCE@;
