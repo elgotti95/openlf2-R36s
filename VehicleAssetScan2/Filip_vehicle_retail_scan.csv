@@ -1,0 +1,33 @@
+﻿model,model_hash,model_record_found,template,template_hash,layer,kind,faction,spawnable,disabled_debug_spawn,model_archive,model_record,radius,bottom,height,half_width,half_length
+allies_veh_a10,129976938,True,,0,,aircraft,Filip - vehicles,False,True,streamed.dsk,1884,,,,,
+allies_veh_b52,1548874057,True,,0,,aircraft,Filip - vehicles,False,True,streamed.dsk,1894,,,,,
+allies_veh_f15e,2150076651,True,,0,,aircraft,Filip - vehicles,False,True,streamed.dsk,1904,,,,,
+allies_veh_humveeat,3295468555,True,,0,,jeep,Filip - vehicles,False,True,streamed.dsk,1908,,,,,
+china_veh_cargotruck,3789685590,True,,0,,truck,Filip - vehicles,False,True,streamed.dsk,2005,,,,,
+china_veh_su-39frogfoot,1264099450,True,,0,,aircraft,Filip - vehicles,False,True,streamed.dsk,2017,,,,,
+china_veh_type66artillery,2629195085,True,,0,,artillery,Filip - vehicles,False,True,streamed.dsk,2020,,,,,
+civ_veh_airplanecargo,4224424248,True,,0,,aircraft,Filip - vehicles,False,True,streamed.dsk,2195,,,,,
+civ_veh_airplanepassenger,445584292,True,,0,,aircraft,Filip - vehicles,False,True,streamed.dsk,2200,,,,,
+global_veh_emplacedGL,2036313927,True,,0,,emplacement,Filip - vehicles,False,True,streamed.dsk,2862,,,,,
+global_veh_emplacedRR,1837983640,True,,0,,emplacement,Filip - vehicles,False,True,streamed.dsk,2865,,,,,
+global_veh_trainengine,3602784993,True,,0,,train,Filip - vehicles,False,True,streamed.dsk,2870,,,,,
+global_veh_traingun,2259347883,True,,0,,train,Filip - vehicles,False,True,streamed.dsk,2872,,,,,
+global_veh_trainjammer,2309712559,True,,0,,train,Filip - vehicles,False,True,streamed.dsk,2874,,,,,
+global_veh_trainpersonnel,3496642029,True,,0,,train,Filip - vehicles,False,True,streamed.dsk,2876,,,,,
+mafia_veh_mi17,346824392,True,,0,,helicopter,Filip - vehicles,False,True,streamed.dsk,3167,,,,,
+mafia_veh_mi28havoc,931924255,True,,0,,helicopter,Filip - vehicles,False,True,streamed.dsk,3174,,,,,
+nk_veh_emplacedgun,3619189926,True,template_nk_mgnest,2467432338,template_vehicles.lyr,emplacement,filip - vehicles,False,False,streamed.dsk,3269,2.2545972501524694,-1.384953510761261,3.3991438865661623,0.4944518834352494,0.8642518401145936
+nk_veh_m1978artillery,3324810851,True,template_nk_m1978,2610364294,template_vehicles.lyr,emplacedgun,nk,False,True,streamed.dsk,3278,23.125621344053545,-10.481780290603638,23.601679372787476,8.893376111984253,16.683584117889406
+nk_veh_radar,1923546873,True,,0,,support,Filip - vehicles,False,True,streamed.dsk,3295,,,,,
+nk_veh_su-25frogfoot,2525637365,True,template_nk_killbox,4115211201,template_vehicles.lyr,airplane,nk,False,True,streamed.dsk,3302,14.561466503805343,-0.01237826286815107,5.586500834813342,7.807490944862366,8.90025944709778
+nk_veh_supergun,3271377384,True,,0,,artillery,Filip - vehicles,False,True,streamed.dsk,3303,,,,,
+nk_veh_testgun,3709349247,True,,0,,artillery,Filip - vehicles,False,True,streamed.dsk,3310,,,,,
+nk_veh_type66artillery,2346820039,True,,0,,artillery,Filip - vehicles,False,True,streamed.dsk,3321,,,,,
+prokat_veh_c17,3044282426,True,,0,,aircraft,Filip - vehicles,False,True,streamed.dsk,3423,,,,,
+sk_veh_ac130spooky,1785125681,True,,0,,aircraft,Filip - vehicles,False,True,streamed.dsk,3721,,,,,
+sk_veh_b2stealthbomber,778653876,True,,0,,aircraft,Filip - vehicles,False,True,streamed.dsk,3723,,,,,
+sk_veh_f117anighthawk,224182147,True,,0,,aircraft,Filip - vehicles,False,True,streamed.dsk,3730,,,,,
+sk_veh_f117anighthawk_grounded,477826246,True,,0,,aircraft-variant,Filip - vehicles,False,True,streamed.dsk,3731,,,,,
+sk_veh_f117anighthawk_wreck,2793338162,True,,0,,wreck,Filip - vehicles,False,True,streamed.dsk,3733,,,,,
+sk_veh_f22raptor,1573925998,True,template_f22_for_killbox,1239748040,template_vehicles.lyr,airplane,allies,False,True,streamed.dsk,3734,14.712070824230562,-1.664151281118393,4.379806476831436,7.111874055862427,12.318797636032105
+sk_veh_KIFV-EW,3884419987,True,,0,,armoured vehicle,Filip - vehicles,False,True,streamed.dsk,3743,,,,,

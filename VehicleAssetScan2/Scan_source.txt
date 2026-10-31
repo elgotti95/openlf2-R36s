@@ -1,0 +1,5 @@
+Mode: ExtractedDirectory
+Source: C:\MERCS rebuild\build\mercenaries-native-ninja\bin\game_files\mercenaries-retail\DATAxbox
+Files found: 382
+Candidate vehicle-related files: 1
+Vehicle layer count: 0
