@@ -1,0 +1,321 @@
+{
+  "schema": 1,
+  "window": {
+    "title": "Mercenaries - Developer tools",
+    "width": 1040,
+    "height": 700
+  },
+  "pages": [
+    {
+      "id": "vehicles",
+      "label": "Vehicle Spawner",
+      "view": "vehicles"
+    },
+    {
+      "id": "filip_vehicles",
+      "label": "Filip - Vehicles",
+      "view": "filip_vehicles"
+    },
+    {
+      "id": "troops",
+      "label": "Troops",
+      "view": "troops"
+    },
+    {
+      "id": "missions",
+      "label": "Missions",
+      "view": "missions"
+    },
+    {
+      "id": "relations",
+      "label": "Faction Relations",
+      "view": "relations"
+    },
+    {
+      "id": "diagnostics",
+      "label": "Diagnostics",
+      "view": "diagnostics"
+    }
+  ],
+  "diagnostics": [
+    {
+      "action": "bookmark",
+      "label": "Save diagnostic bookmark (F8)"
+    },
+    {
+      "action": "inspect_spawn",
+      "label": "Inspect last spawned actor"
+    },
+    {
+      "action": "freecam_toggle",
+      "label": "Free Camera (F11)"
+    },
+    {
+      "action": "fps_toggle",
+      "label": "FPS / Frametime overlay"
+    },
+    {
+      "action": "untargetable_toggle",
+      "label": "Player untargetable"
+    },
+    {
+      "action": "passive_toggle",
+      "label": "Passive Mode"
+    },
+    {
+      "action": "boids_spawn",
+      "label": "Spawn Boids Simulation"
+    }
+  ],
+  "catalogs": {
+    "vehicles": "catalogs/vehicles.json",
+    "troops": "catalogs/troops.json"
+  },
+  "notes": {
+    "edit_without_rebuild": "Edit this file or the catalog JSON files while the game is closed, then launch the game again. Existing user files are never overwritten by a rebuild.",
+    "native_actions": "Only the native actions listed above have handlers. A brand-new game operation requires one native handler before JSON can expose it."
+  },
+  "crew_modes": [
+    {
+      "label": "Empty vehicle",
+      "value": 0
+    },
+    {
+      "label": "Driver / pilot only",
+      "value": 1
+    },
+    {
+      "label": "Full crew and passengers",
+      "value": 2
+    }
+  ],
+  "crew_factions": [
+    {
+      "label": "Crew: Allied Nations",
+      "value": 0
+    },
+    {
+      "label": "Crew: Chinese",
+      "value": 1
+    },
+    {
+      "label": "Crew: Russian Mafia",
+      "value": 2
+    },
+    {
+      "label": "Crew: North Korean",
+      "value": 3
+    },
+    {
+      "label": "Crew: South Korean",
+      "value": 4
+    }
+  ],
+  "troop_quantities": [
+    {
+      "label": "1 soldier",
+      "value": 1
+    },
+    {
+      "label": "4 soldiers",
+      "value": 4
+    },
+    {
+      "label": "8 soldiers",
+      "value": 8
+    },
+    {
+      "label": "12 soldiers",
+      "value": 12
+    }
+  ],
+  "weapons": [
+    {
+      "label": "Default loadout",
+      "template": null,
+      "value": 0
+    },
+    {
+      "label": "Assault Rifle (AK-47)",
+      "template": "template_pic_ak47",
+      "value": 1
+    },
+    {
+      "label": "Carbine (M4)",
+      "template": "template_pic_m4",
+      "value": 2
+    },
+    {
+      "label": "SMG (Type 85)",
+      "template": "template_pic_smg",
+      "value": 3
+    },
+    {
+      "label": "Covert SMG (MP5)",
+      "template": "template_pic_mp5",
+      "value": 4
+    },
+    {
+      "label": "Shotgun",
+      "template": "template_pic_shotgun",
+      "value": 5
+    },
+    {
+      "label": "Light Machine Gun (RPD)",
+      "template": "template_pic_lmg",
+      "value": 6
+    },
+    {
+      "label": "Machine Gun (MG36)",
+      "template": "template_pic_mg36",
+      "value": 7
+    },
+    {
+      "label": "Sniper Rifle",
+      "template": "template_pic_sniperrifle",
+      "value": 8
+    },
+    {
+      "label": "Covert Sniper Rifle",
+      "template": "template_pic_covertrifle",
+      "value": 9
+    },
+    {
+      "label": "Anti-Materiel Rifle",
+      "template": "template_pic_amrifle",
+      "value": 10
+    },
+    {
+      "label": "RPG",
+      "template": "template_pic_rpg",
+      "value": 11
+    },
+    {
+      "label": "SMAW",
+      "template": "template_pic_smaw",
+      "value": 12
+    },
+    {
+      "label": "Anti-Air Missile (Stinger)",
+      "template": "template_pic_stinger",
+      "value": 13
+    },
+    {
+      "label": "Cheat SMG",
+      "template": "template_pic_cheatsmg",
+      "value": 14
+    },
+    {
+      "label": "Cheat Grenade Launcher",
+      "template": "template_pic_cheatgl",
+      "value": 15
+    },
+    {
+      "label": "Cheat Gun",
+      "template": "template_pic_cheatgun",
+      "value": 16
+    }
+  ],
+  "mission_factions": [
+    {
+      "label": "Allied Nations",
+      "value": 0
+    },
+    {
+      "label": "Chinese",
+      "value": 1
+    },
+    {
+      "label": "Russian Mafia",
+      "value": 2
+    },
+    {
+      "label": "South Korean",
+      "value": 3
+    }
+  ],
+  "provinces": [
+    {
+      "label": "Southern Province",
+      "value": 0
+    },
+    {
+      "label": "Northern Province",
+      "value": 1
+    }
+  ],
+  "relation_factions": [
+    {
+      "label": "Player / Mercenaries",
+      "value": 0
+    },
+    {
+      "label": "North Korean",
+      "value": 1
+    },
+    {
+      "label": "South Korean",
+      "value": 2
+    },
+    {
+      "label": "Russian Mafia",
+      "value": 3
+    },
+    {
+      "label": "Chinese",
+      "value": 4
+    },
+    {
+      "label": "Allied Nations",
+      "value": 5
+    },
+    {
+      "label": "Civilian",
+      "value": 6
+    }
+  ],
+  "relation_values": [
+    {
+      "label": "Hostile",
+      "value": 0
+    },
+    {
+      "label": "Unfriendly",
+      "value": 1
+    },
+    {
+      "label": "Neutral",
+      "value": 2
+    },
+    {
+      "label": "Friendly",
+      "value": 3
+    }
+  ],
+  "buttons": [
+    {
+      "id": "spawn",
+      "label": "Spawn selected vehicle / troop"
+    },
+    {
+      "id": "close",
+      "label": "Close"
+    },
+    {
+      "id": "close_after_spawn",
+      "label": "Close after spawning"
+    },
+    {
+      "id": "mission_start",
+      "label": "Start mission"
+    },
+    {
+      "id": "province_travel",
+      "label": "Travel"
+    },
+    {
+      "id": "relation_apply",
+      "label": "Apply relationship"
+    }
+  ]
+}
