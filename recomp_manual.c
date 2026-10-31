@@ -1,3 +1,4 @@
+/* DEBUG XBE PORT: manual source patch v1 */
 #include "recomp_controls.h"
 #include "plugin_host.h"
 #include "slope_slide.h"
@@ -207,8 +208,15 @@ volatile uint32_t g_mercenaries_hq_briefing_active;
 static uint32_t g_recomp_live_human_actor;
 static uint32_t g_recomp_live_vehicle_actor;
 static uint32_t g_recomp_live_player_ai;
+#if defined(MERCENARIES_DEBUG_XBE_BUILD)
+extern void sub_0092FC10(void);
+#define RECOMP_LUA_NEWLSTR_CALL() sub_0092FC10()
+#else
 extern void sub_001E2640(void);
+#define RECOMP_LUA_NEWLSTR_CALL() sub_001E2640()
 extern void sub_001E8EC0(void);
+#endif
+/* The retail bytecode helper sub_001E8EC0 is used only by the retail-only tail override. */
 extern void sub_001DF0B0(void);
 extern void sub_002A1954(void);
 extern void sub_002A1774(void);
@@ -2824,7 +2832,13 @@ int recomp_xact_low_level_handle_exists(uint32_t handle);
 static void recomp_guard_call_end(void);
 static int recomp_test_guard_heap_failure;
 #include "voice_callback_queue.h"
+#if defined(MERCENARIES_DEBUG_XBE_BUILD)
+extern void sub_006FC9B0(void); /* RsLuaState::InvokeLuaFunction */
+#define RECOMP_INVOKE_LUA_FUNCTION() sub_006FC9B0()
+#else
 extern void sub_00113A50(void);
+#define RECOMP_INVOKE_LUA_FUNCTION() sub_00113A50()
+#endif
 uint64_t recomp_voice_call_begin(void) { return voice_call_begin(); }
 void recomp_voice_cancel_owner(uint32_t owner) { voice_discard(owner, 0, 0); recomp_guard_cancel_owner(owner); }
 static void recomp_voice_dispatch_deferred(uint32_t owner, uint32_t vm, const char *name)
@@ -2843,7 +2857,7 @@ static void recomp_voice_dispatch_deferred(uint32_t owner, uint32_t vm, const ch
     recomp_guest_push_u32(0);
     g_ecx = owner;
     xbox_preview_log_event("voice-fallback", "dispatch owner=%08X vm=%08X callback=%.100s", owner, vm, name);
-    sub_00113A50();
+    RECOMP_INVOKE_LUA_FUNCTION();
     recomp_restore_guest_cpu_context(&saved);
 }
 void recomp_voice_call_end(uint64_t mark, int success)
@@ -2866,7 +2880,7 @@ void recomp_voice_fallback_call(void)
             return;
         }
     }
-    sub_00113A50();
+    RECOMP_INVOKE_LUA_FUNCTION();
 }
 /* Failure injection is private-harness-only; never enabled by user settings. */
 static uint32_t recomp_test_hq_managed_failure_hash;
@@ -2942,6 +2956,7 @@ void recomp_hq_preview_snapshot(void)
 }
 void recomp_hq_init_checkpoint(uint32_t phase, uint32_t vm)
 {
+#if !defined(MERCENARIES_DEBUG_XBE_BUILD)
     /* Private integration test: fail either ScriptInit or its later timer.
      * Retail Lua raises and unwinds the error; recovery does not fake status. */
     static int injected;
@@ -2974,6 +2989,7 @@ void recomp_hq_init_checkpoint(uint32_t phase, uint32_t vm)
             }
         }
     }
+#endif /* !MERCENARIES_DEBUG_XBE_BUILD: retail-only HQ fault injection */
     xbox_preview_log_sample("hq-entry", "briefing-script phase=%s vm=%08X owner=%08X scene=%08X",
         phase ? "returned" : "begin", vm, guest_u32(0x403378u), guest_u32(0x403370u));
 }
@@ -2996,8 +3012,11 @@ typedef struct recomp_guard_wait {
     unsigned defining_depth;
 } recomp_guard_wait;
 static recomp_guard_wait guard_wait;
+#if !defined(MERCENARIES_DEBUG_XBE_BUILD)
 static void mercenaries_voiceover_stop_callback(void);
+#endif
 
+#if !defined(MERCENARIES_DEBUG_XBE_BUILD)
 static uint32_t recomp_guard_callback_record(uint32_t handle)
 {
     const uint32_t pool = 0x00371BB0u;
@@ -3026,6 +3045,7 @@ static uint32_t recomp_guard_managed_cue(uint32_t handle)
     }
     return 0u;
 }
+#endif /* !MERCENARIES_DEBUG_XBE_BUILD: retail HQ callback/cue helpers */
 static void recomp_guard_cancel_owner(uint32_t owner)
 {
     if (guard_wait.owner == owner) memset(&guard_wait, 0, sizeof(guard_wait));
@@ -3049,6 +3069,11 @@ static void recomp_guard_call_end(void)
 }
 static void recomp_guard_request(uint32_t vm, uint32_t handle)
 {
+#if defined(MERCENARIES_DEBUG_XBE_BUILD)
+    (void)vm;
+    (void)handle;
+    return; /* debug XBE uses its own XACT/callback completion path */
+#else
     uint32_t record = recomp_guard_callback_record(handle);
     if (!record || guest_u8(0x403384u) || guest_u32(0x323ACCu) != 15u) return;
     uint32_t owner = guest_u32(record);
@@ -3075,9 +3100,14 @@ static void recomp_guard_request(uint32_t vm, uint32_t handle)
         recomp_restore_guest_cpu_context(&saved);
         xbox_preview_log_event("hq-guard", "private-test interrupted registered welcome handle=%08X", handle);
     }
+#endif /* !MERCENARIES_DEBUG_XBE_BUILD: retail HQ cue guard */
 }
 static void recomp_guard_poll(void)
 {
+#if defined(MERCENARIES_DEBUG_XBE_BUILD)
+    memset(&guard_wait, 0, sizeof(guard_wait));
+    return; /* no retail XACT cue-table polling in the debug XBE */
+#else
     if (!guard_wait.handle || voice_depth || g_esp < 0x20000u || g_esp >= 0x04000000u) return;
     if (getenv("MERCENARIES_TEST_GAMEPAD_FILE") && getenv("MERCENARIES_TEST_GUARD_NO_RECOVERY")) return;
     uint32_t owner = guard_wait.owner, vm = guard_wait.vm, handle = guard_wait.handle;
@@ -3103,6 +3133,7 @@ static void recomp_guard_poll(void)
     recomp_guest_push_u32(0u);
     mercenaries_voiceover_stop_callback(); /* ordinary find/invoke/release */
     recomp_restore_guest_cpu_context(&saved);
+#endif /* !MERCENARIES_DEBUG_XBE_BUILD: retail HQ cue guard */
 }
 
 /* A failed room script must not leave its retained entry fade on screen.
@@ -3130,6 +3161,15 @@ static void recomp_hq_note_script_error(uint32_t vm)
 void recomp_hq_recover_script_error(void)
 {
     recomp_guard_poll();
+#if defined(MERCENARIES_DEBUG_XBE_BUILD)
+    if (hq_error_owner) {
+        xbox_preview_log_event("hq-recovery", "debug XBE: retail-only recovery path skipped; pending error state cleared");
+        hq_error_owner = 0u;
+        hq_error_vm = 0u;
+        hq_error_scene = 0u;
+    }
+    return; /* retail HQ script-error recovery is not mapped for debug XBE */
+#else
     if (!hq_error_owner || voice_depth || g_esp < 0x20000u || g_esp >= 0x4000000u) return;
     uint32_t owner = hq_error_owner;
     if (!guest_u8(0x403384u) || guest_u32(0x403378u) != owner ||
@@ -3175,12 +3215,15 @@ void recomp_hq_recover_script_error(void)
         hq_recovering = 0;
     }
     recomp_restore_guest_cpu_context(&saved);
+#endif /* !MERCENARIES_DEBUG_XBE_BUILD */
 }
 
 /* Guard-side state was absent from the old room-only timeline. Observe the
  * exact registered welcome without inferring silence/completion from its age.
  * Runs on the existing preview cadence, never from the audio worker. */
 static float guest_f32(uint32_t xbox_va);
+#if !defined(MERCENARIES_DEBUG_XBE_BUILD)
+/* DEBUG XBE PORT: retail HQ preview sampler excluded for debug XBE */
 static int recomp_guard_audio_range(uint32_t address, uint32_t size)
 {
     return address >= 0x10000u && size <= 0x4000000u && address <= 0x4000000u-size;
@@ -3251,6 +3294,14 @@ emit:
     xbox_preview_log_event("hq-guard-audio", "%s", record);
 #undef GUARD_AUDIO_APPEND
 }
+#else
+static void recomp_guard_preview_snapshot(void)
+{
+    /* Debug XBE uses its native XACT state; do not inspect retail cue tables. */
+    (void)0;
+}
+#endif /* !MERCENARIES_DEBUG_XBE_BUILD: retail HQ preview sampler */
+
 
 /* Retail RedMovie::Update contains this operation, but BrushMovie calls
  * UpdateMovie instead. Apply Music-category attenuation before the decoder
@@ -15842,6 +15893,20 @@ static uint32_t merc_heap_size(uint32_t address, uint32_t *size)
  * it does not use small pools, run memory-helper callbacks, or retry forever.
  * Keep explicit ownership so realloc/free return each block to its allocator.
  * No additional guest RAM, graphics-pool changes, or mod setting is needed. */
+#if defined(MERCENARIES_DEBUG_XBE_BUILD)
+#define RECOMP_MAIN_POOL_GUEST_VA 0x01119CBCu
+extern void sub_00955FC0(void); /* debug RedMemory::Pool::Alloc */
+extern void sub_00955E30(void); /* debug RedMemory::Pool::Free */
+#define RECOMP_MAIN_POOL_ALLOC_CALL() sub_00955FC0()
+#define RECOMP_MAIN_POOL_FREE_CALL() sub_00955E30()
+#else
+#define RECOMP_MAIN_POOL_GUEST_VA 0x00645984u
+extern void sub_001F6D80(void);
+extern void sub_001F6970(void);
+#define RECOMP_MAIN_POOL_ALLOC_CALL() sub_001F6D80()
+#define RECOMP_MAIN_POOL_FREE_CALL() sub_001F6970()
+#endif
+
 typedef struct merc_lua_pool_block {
     uint32_t address;
     struct merc_lua_pool_block *next;
@@ -15851,7 +15916,7 @@ static merc_lua_pool_block *g_merc_lua_pool_blocks;
 static uint32_t merc_main_pool_allocate(uint32_t size, merc_lua_pool_block **blocks, const char *event)
 {
     uint32_t result;
-    const uint32_t pool = 0x00645984u;
+    const uint32_t pool = RECOMP_MAIN_POOL_GUEST_VA;
     uint32_t start = guest_u32(pool), bytes = guest_u32(pool + 4u);
     uint32_t capacity = guest_u32(pool + 0x14u);
     uint32_t free_end = guest_u32(pool + 0x18u);
@@ -15868,7 +15933,6 @@ static uint32_t merc_main_pool_allocate(uint32_t size, merc_lua_pool_block **blo
     if (!record) return 0u;
     recomp_saved_guest_cpu_context saved;
     recomp_save_guest_cpu_context(&saved);
-    extern void sub_001F6D80(void);
     recomp_guest_push_u32(0u); /* not a temporary allocation */
     recomp_guest_push_u32(1u); /* array */
     recomp_guest_push_u32(1u); /* allocate from the high end */
@@ -15876,7 +15940,7 @@ static uint32_t merc_main_pool_allocate(uint32_t size, merc_lua_pool_block **blo
     recomp_guest_push_u32(size);
     recomp_guest_push_u32(0u);
     g_ecx = pool;
-    sub_001F6D80(); /* RedMemory::Pool::Alloc; thiscall, ret 20 */
+    RECOMP_MAIN_POOL_ALLOC_CALL(); /* thiscall, ret 20 */
     result = g_eax;
     recomp_restore_guest_cpu_context(&saved);
     if (!result) { free(record); return 0u; }
@@ -15895,12 +15959,11 @@ static int merc_main_pool_free(uint32_t address, merc_lua_pool_block **blocks)
     merc_lua_pool_block *record = *link;
     recomp_saved_guest_cpu_context saved;
     recomp_save_guest_cpu_context(&saved);
-    extern void sub_001F6970(void);
     recomp_guest_push_u32(1u); /* array */
     recomp_guest_push_u32(address);
     recomp_guest_push_u32(0u);
-    g_ecx = 0x00645984u;
-    sub_001F6970(); /* RedMemory::Pool::Free; thiscall, ret 8 */
+    g_ecx = RECOMP_MAIN_POOL_GUEST_VA;
+    RECOMP_MAIN_POOL_FREE_CALL(); /* thiscall, ret 8 */
     recomp_restore_guest_cpu_context(&saved);
     *link = record->next;
     free(record);
@@ -16081,7 +16144,7 @@ void sub_001E26E0(void)
     g_esp -= 4u; *(volatile uint32_t *)guest_ptr(g_esp) = state;
     g_eax = hash;
     g_esp -= 4u; *(volatile uint32_t *)guest_ptr(g_esp) = 0u;
-    sub_001E2640();
+    RECOMP_LUA_NEWLSTR_CALL();
     g_esp += 12u;
     g_ebx = saved_ebx;
     g_esi = saved_esi;
@@ -16437,6 +16500,8 @@ void sub_001E89E0(void)
  * split the RET into its own function, leaving the generated block without
  * the guest-stack return adjustment and leaking four bytes per invocation.
  */
+#if !defined(MERCENARIES_DEBUG_XBE_BUILD)
+/* DEBUG XBE PORT: retail-only function excluded: sub_001E91ED */
 void sub_001E91ED(void)
 {
     const uint32_t expression = g_ebx;
@@ -16459,6 +16524,7 @@ void sub_001E91ED(void)
     *(volatile uint32_t *)guest_ptr(expression) = 0x0Bu;
     g_esp += 4u;
 }
+#endif /* !MERCENARIES_DEBUG_XBE_BUILD */
 /*
  * Lua pcall's static f_call callback at 0x001DD580. Function discovery did
  * not emit this tiny body, so protected calls previously returned success
@@ -17023,6 +17089,8 @@ static void mercenaries_dsound_timer_dpc_callback(void)
 extern void sub_00113650(void);
 extern void sub_00113A50(void);
 extern void sub_0011D480(void);
+#if !defined(MERCENARIES_DEBUG_XBE_BUILD)
+/* DEBUG XBE PORT: retail-only function excluded: mercenaries_voiceover_stop_callback */
 static void mercenaries_voiceover_stop_callback(void)
 {
     g_esp -= 4u;
@@ -17060,13 +17128,17 @@ static void mercenaries_voiceover_stop_callback(void)
     g_esi = guest_u32(g_esp);
     g_esp += 8u; /* POP ESI; RET -- caller still owns the handle argument. */
 }
+#endif /* !MERCENARIES_DEBUG_XBE_BUILD */
 
 recomp_func_t recomp_lookup_manual(uint32_t xbox_va)
 {
 #if defined(MERCENARIES_DEBUG_XBE_BUILD)
-    /* Retail-address manual overrides are not valid for the debug XBE. */
-    (void)xbox_va;
-    return NULL;
+    switch (xbox_va) {
+    case 0x0092FAD0u: /* debug Lua string interning; retail 0x001E26E0 */
+        return sub_001E26E0;
+    default:
+        return NULL;
+    }
 #else
     switch (xbox_va) {
     case 0x0011EA00:
