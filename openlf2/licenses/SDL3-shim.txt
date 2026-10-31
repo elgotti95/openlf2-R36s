@@ -1,3 +1,0 @@
-libs.aarch64/libSDL3.so.0 is SDL3 built with the SDL2 backend from
-https://github.com/bmdhacks/SDL.git at commit 6057d79baf8321bf190479a699655f06cc2a962f, with SPIRV-Cross vulkan-sdk-1.4.304.1.
-It loads the device's own libSDL2-2.0.so.0 at run time.
