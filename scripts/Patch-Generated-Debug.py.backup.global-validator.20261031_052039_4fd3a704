@@ -1,0 +1,265 @@
+#!/usr/bin/env python3
+"""Validate and patch the debug-XBE generated tree with visible progress.
+
+This stage does not discover functions, re-run disassembly, or generate link
+stubs. It only normalizes the debug entry symbol and replaces one reviewed
+Lua-string function body in the generated C tree.
+"""
+from __future__ import annotations
+
+import argparse
+import json
+from pathlib import Path
+import sys
+import time
+
+
+def _fmt_bytes(value: int) -> str:
+    if value < 1024:
+        return f"{value} B"
+    if value < 1024 * 1024:
+        return f"{value / 1024:.1f} KiB"
+    return f"{value / (1024 * 1024):.1f} MiB"
+
+
+def _fmt_time(seconds: float) -> str:
+    seconds = max(0, int(seconds))
+    return f"{seconds // 60:02d}:{seconds % 60:02d}"
+
+
+def _progress(index: int, total: int, done_bytes: int, total_bytes: int,
+              path: Path, started: float) -> None:
+    """Print one flushed, durable status line for each processed C file."""
+    pct = 100.0 if total_bytes == 0 else min(100.0, done_bytes * 100.0 / total_bytes)
+    width = 24
+    filled = min(width, int(pct * width / 100.0))
+    bar = "#" * filled + "-" * (width - filled)
+    elapsed = _fmt_time(time.perf_counter() - started)
+    print(
+        f"[SCAN {index:02d}/{total:02d}] DONE [{bar}] {pct:5.1f}% "
+        f"| {path.name} | {_fmt_bytes(done_bytes)}/{_fmt_bytes(total_bytes)} "
+        f"| elapsed {elapsed}",
+        flush=True,
+    )
+
+
+def _find_matching_brace(text: str, open_index: int) -> int:
+    """Find the matching C brace while ignoring comments and quoted strings."""
+    depth = 0
+    state = "code"
+    escaped = False
+    i = open_index
+    while i < len(text):
+        ch = text[i]
+        nxt = text[i + 1] if i + 1 < len(text) else ""
+        if state == "line_comment":
+            if ch == "\n":
+                state = "code"
+        elif state == "block_comment":
+            if ch == "*" and nxt == "/":
+                state = "code"
+                i += 1
+        elif state in ("string", "char"):
+            if escaped:
+                escaped = False
+            elif ch == "\\":
+                escaped = True
+            elif (state == "string" and ch == '"') or (state == "char" and ch == "'"):
+                state = "code"
+        else:
+            if ch == "/" and nxt == "/":
+                state = "line_comment"
+                i += 1
+            elif ch == "/" and nxt == "*":
+                state = "block_comment"
+                i += 1
+            elif ch == '"':
+                state = "string"
+                escaped = False
+            elif ch == "'":
+                state = "char"
+                escaped = False
+            elif ch == "{":
+                depth += 1
+            elif ch == "}":
+                depth -= 1
+                if depth == 0:
+                    return i
+        i += 1
+    raise RuntimeError("unbalanced braces while locating generated function")
+
+
+def replace_guest_function_text(text: str, symbol: str, path: Path) -> tuple[str, bool]:
+    """Replace one generated guest function in already-loaded source text."""
+    import re
+
+    pattern = re.compile(
+        r"(?m)^void\s+" + re.escape(symbol) + r"\s*\(\s*void\s*\)\s*\n\s*\{"
+    )
+    matches = list(pattern.finditer(text))
+    if not matches:
+        return text, False
+    if len(matches) != 1:
+        raise RuntimeError(f"{symbol}: expected one definition in {path.name}, found {len(matches)}")
+
+    match = matches[0]
+    open_index = text.find("{", match.start(), match.end())
+    close_index = _find_matching_brace(text, open_index)
+    end = close_index + 1
+    current = text[match.start():end]
+    marker = "/* DEBUG XBE PORT: use guarded manual Lua string interning */"
+    if marker in current:
+        return text, True
+
+    replacement = (
+        "extern void sub_001E26E0(void); /* manual Lua hash-chain repair */\n"
+        f"void {symbol}(void)\n{{\n"
+        f"    {marker}\n"
+        "    sub_001E26E0();\n"
+        "}"
+    )
+    return text[:match.start()] + replacement + text[end:], True
+
+
+def _write_bytes_if_changed(path: Path, data: bytes, old: bytes, new: bytes) -> bool:
+    if old not in data:
+        return False
+    updated = data.replace(old, new)
+    if updated != data:
+        path.write_bytes(updated)
+    return True
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser(
+        description="Fast, visible validation/normalization of the generated debug-XBE C tree."
+    )
+    parser.add_argument("--repo-root", required=True, type=Path)
+    parser.add_argument("--xbe-json", required=True, type=Path)
+    parser.add_argument("--generated-root", required=True, type=Path)
+    args = parser.parse_args()
+
+    started = time.perf_counter()
+    print("[DEBUG VALIDATOR] Starting generated debug-XBE validation.", flush=True)
+    print("[STEP 1/4] Reading XBE metadata and checking debug entry point...", flush=True)
+    metadata = json.loads(args.xbe_json.read_text(encoding="utf-8"))
+    if metadata.get("type") != "debug":
+        raise SystemExit("The debug generated-code validator received a non-debug XBE.")
+    entry = int(str(metadata["entry_point"]), 16)
+    generic = f"sub_{entry:08X}".encode("ascii")
+    public = b"xbe_entry_point"
+    generated = args.generated_root
+    header = generated / "recomp_funcs.h"
+    dispatch = generated / "recomp_dispatch.c"
+    if not header.is_file() or not dispatch.is_file():
+        raise SystemExit("Generated function header or dispatch table is missing.")
+
+    print("[STEP 2/4] Checking required debug-XBE generated symbols...", flush=True)
+    header_data = header.read_bytes()
+    dispatch_data = dispatch.read_bytes()
+    required = (
+        b"sub_0092FC10", b"sub_0092FAD0", b"sub_006FC9B0",
+        b"sub_00955FC0", b"sub_00955E30",
+    )
+    for symbol in required:
+        if symbol not in header_data:
+            raise SystemExit(f"Required reviewed debug function {symbol.decode()} is absent from recomp_funcs.h.")
+    if public not in header_data and generic not in header_data:
+        raise SystemExit(f"Debug entry function {generic.decode()} is missing from recomp_funcs.h.")
+    if public not in dispatch_data and generic not in dispatch_data:
+        raise SystemExit(f"Debug entry function {generic.decode()} is missing from recomp_dispatch.c.")
+
+    stub = generated / "recomp_debug_retail_compat_stubs.c"
+    source_files = sorted(
+        path for path in generated.glob("recomp_*.c")
+        if path.resolve() != stub.resolve()
+    )
+    if not source_files:
+        raise SystemExit("No generated recomp_*.c implementation files were found.")
+    sizes = [path.stat().st_size for path in source_files]
+    total_bytes = sum(sizes)
+    print(
+        f"[STEP 3/4] Scanning {len(source_files)} generated C file(s) "
+        f"({_fmt_bytes(total_bytes)} total). START/DONE messages identify the current file.",
+        flush=True,
+    )
+    print(
+        "[INFO] This is a read-dominant scan; disk usage usually will not increase. "
+        "Only files needing a symbol/body update are rewritten.",
+        flush=True,
+    )
+    changed_entry_sources = 0
+    lua_override_sources = 0
+    done_bytes = 0
+    for index, (path, expected_size) in enumerate(zip(source_files, sizes), 1):
+        before_pct = 100.0 if total_bytes == 0 else done_bytes * 100.0 / total_bytes
+        print(
+            f"[SCAN {index:02d}/{len(source_files):02d}] START "
+            f"| {path.name} | {_fmt_bytes(expected_size)} "
+            f"| checking entry symbol + sub_0092FAD0 | total {before_pct:5.1f}% "
+            f"| elapsed {_fmt_time(time.perf_counter() - started)}",
+            flush=True,
+        )
+        data = path.read_bytes()
+        # Search the byte buffer once. Files without either relevant symbol are
+        # never decoded or parsed as C, avoiding unnecessary text allocations.
+        has_entry = generic in data
+        has_lua = b"sub_0092FAD0" in data
+        if has_entry:
+            data = data.replace(generic, public)
+            changed_entry_sources += 1
+        if has_lua:
+            text = data.decode("utf-8", errors="strict")
+            text, found = replace_guest_function_text(text, "sub_0092FAD0", path)
+            if not found:
+                raise RuntimeError(
+                    f"sub_0092FAD0 was referenced in {path.name} but its function body was not found."
+                )
+            encoded = text.encode("utf-8")
+            if encoded != data:
+                data = encoded
+            lua_override_sources += 1
+        if has_entry or has_lua:
+            path.write_bytes(data)
+        done_bytes += expected_size
+        _progress(index, len(source_files), done_bytes, total_bytes, path, started)
+
+    if lua_override_sources != 1:
+        raise SystemExit(
+            f"Expected exactly one generated sub_0092FAD0 implementation; found {lua_override_sources}."
+        )
+
+    # Header and dispatch are small. Normalize their symbol names after the
+    # C-file pass and report them as part of the same explicit operation.
+    for path in (header, dispatch):
+        data = path.read_bytes()
+        if generic in data:
+            path.write_bytes(data.replace(generic, public))
+
+    print("[STEP 4/4] Verifying entry symbol, Lua redirect and obsolete-stub cleanup...", flush=True)
+    header_data = header.read_bytes()
+    dispatch_data = dispatch.read_bytes()
+    if public not in header_data or public not in dispatch_data:
+        raise SystemExit("Debug entry symbol normalization did not complete correctly.")
+    if generic in header_data or generic in dispatch_data:
+        raise SystemExit("Generic debug entry symbol remains after normalization.")
+
+    if stub.exists():
+        stub.unlink()
+        print("[CLEANUP] Removed obsolete link-only retail stub source.", flush=True)
+
+    elapsed = time.perf_counter() - started
+    print(f"[OK] Debug entry 0x{entry:08X} normalized as xbe_entry_point.", flush=True)
+    print(f"[OK] Updated {changed_entry_sources} generated entry-point source file(s).", flush=True)
+    print("[OK] Redirected generated debug sub_0092FAD0 to the guarded manual Lua string-chain repair.", flush=True)
+    print("[OK] No compatibility stubs are generated; missing real functions remain linker errors.", flush=True)
+    print(f"[DONE] Validation finished in {_fmt_time(elapsed)} ({_fmt_bytes(total_bytes)} scanned).", flush=True)
+    return 0
+
+
+if __name__ == "__main__":
+    try:
+        raise SystemExit(main())
+    except Exception as exc:
+        print(f"[ERROR] {exc}", file=sys.stderr, flush=True)
+        raise SystemExit(1)

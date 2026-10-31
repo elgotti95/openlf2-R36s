@@ -1,0 +1,299 @@
+﻿[CmdletBinding()]
+param(
+    [string]$GameDirectory,
+    [ValidateRange(2, 64)]
+    [int]$MaxPasses = 8
+)
+
+$ErrorActionPreference = 'Stop'
+Set-StrictMode -Version Latest
+
+$PortRoot = [IO.Path]::GetFullPath((Join-Path $PSScriptRoot '..'))
+$RepoRoot = [IO.Path]::GetFullPath((Join-Path $PortRoot '..\..'))
+if (-not $GameDirectory) {
+    $GameDirectory = Join-Path $RepoRoot 'game_files\mercenaries-retail'
+}
+$GameRoot = [IO.Path]::GetFullPath($GameDirectory)
+$XbePath = Join-Path $GameRoot 'default.xbe'
+$Python = Join-Path $RepoRoot '.venv\Scripts\python.exe'
+$AnalysisRoot = Join-Path $PortRoot 'analysis'
+$DisasmRoot = Join-Path $AnalysisRoot 'disasm'
+$FuncIdRoot = Join-Path $AnalysisRoot 'func_id'
+$RecompRoot = Join-Path $AnalysisRoot 'recomp-debug'
+$XbeJson = Join-Path $AnalysisRoot 'xbe.json'
+$GeneratedRoot = Join-Path $PortRoot 'src\recomp\gen'
+$ManualSeeds = Join-Path $AnalysisRoot 'debug-manual-seeds.json'
+$MergedSeeds = Join-Path $AnalysisRoot 'debug-seeds.json'
+$MergeScript = Join-Path $PSScriptRoot 'Merge-FunctionSeeds.ps1'
+$ProfilePatcher = Join-Path $PSScriptRoot 'Apply-Debug-XBE-Profile.py'
+$GeneratedPatcher = Join-Path $PSScriptRoot 'Patch-Generated-Debug.py'
+
+# This is the exact debug.xbe SHA-256 from the user's uploaded archive and the
+# successful 8-pass analysis log. It is used only to qualify reuse of that
+# already-completed analysis, never to reject an XBE.
+$KnownDebugSha256 = '0A348453AEB87E597ED6644569C8F161830106ABA9BD844F20BD0F22C4D579F2'
+$KnownDebugEntryPoint = '0x0040C90B'
+
+if (-not (Test-Path -LiteralPath $Python -PathType Leaf)) {
+    throw "Python 3.12 virtual environment not found: $Python"
+}
+if (-not (Test-Path -LiteralPath $XbePath -PathType Leaf)) {
+    throw "default.xbe not found: $XbePath"
+}
+foreach ($required in @($MergeScript, $ProfilePatcher, $GeneratedPatcher)) {
+    if (-not (Test-Path -LiteralPath $required -PathType Leaf)) {
+        throw "Debug-profile helper is missing: $required"
+    }
+}
+
+function Invoke-Python {
+    param([Parameter(ValueFromRemainingArguments = $true)][string[]]$Arguments)
+    & $Python @Arguments
+    if ($LASTEXITCODE -ne 0) {
+        throw "Python command failed with exit code $LASTEXITCODE."
+    }
+}
+
+function Get-JsonFile {
+    param([string]$Path)
+    if (-not (Test-Path -LiteralPath $Path -PathType Leaf)) { return $null }
+    return (Get-Content -LiteralPath $Path -Raw | ConvertFrom-Json)
+}
+
+function Test-CompletedDebugAnalysis {
+    param(
+        [string]$BinaryHash,
+        [string]$EntryPoint,
+        [string]$MetadataPath,
+        [string]$SummaryPath,
+        [string]$FunctionsPath,
+        [string]$LabelsPath,
+        [string]$StringsPath,
+        [string]$XrefsPath,
+        [string]$IdentifiedPath
+    )
+
+    # Reuse only the exact debug XBE and the already-stabilized 8-pass output
+    # seen in the user's log. A name-only match is not enough.
+    if ($BinaryHash -ne $KnownDebugSha256 -or $EntryPoint -ne $KnownDebugEntryPoint) {
+        return $false
+    }
+    foreach ($path in @($MetadataPath,$SummaryPath,$FunctionsPath,$LabelsPath,$StringsPath,$XrefsPath,$IdentifiedPath)) {
+        if (-not (Test-Path -LiteralPath $path -PathType Leaf)) { return $false }
+    }
+
+    try {
+        $metadata = Get-JsonFile $MetadataPath
+        $summary = Get-JsonFile $SummaryPath
+        $functionsFile = Get-Item -LiteralPath $FunctionsPath
+        $identifiedFile = Get-Item -LiteralPath $IdentifiedPath
+        if ($metadata.type -ne 'debug' -or $metadata.entry_point -ne $EntryPoint) { return $false }
+        if ($summary.entry_point -ne $EntryPoint) { return $false }
+        if ([IO.Path]::GetFileName([string]$summary.binary) -ine 'default.xbe') { return $false }
+        if ([int]$summary.total_functions -lt 50000) { return $false }
+        # Avoid loading two multi-megabyte JSON arrays into Windows PowerShell
+        # just to prove they are present; the summary carries the function count.
+        if ($functionsFile.Length -lt 1024 -or $identifiedFile.Length -lt 1024) { return $false }
+
+        $xbeText = @($metadata.sections | Where-Object { $_.name -eq '.text' } | Select-Object -First 1)
+        $sumText = @($summary.sections_analyzed | Where-Object { $_.name -eq '.text' } | Select-Object -First 1)
+        if ($xbeText.Count -ne 1 -or $sumText.Count -ne 1) { return $false }
+        if ([string]$sumText[0].va -ne [string]$xbeText[0].virtual_addr) { return $false }
+        if ([int64]$sumText[0].size -ne [int64]$xbeText[0].virtual_size) { return $false }
+        return $true
+    }
+    catch {
+        return $false
+    }
+}
+
+New-Item -ItemType Directory -Force -Path $AnalysisRoot | Out-Null
+Push-Location $RepoRoot
+try {
+    Write-Host '================================================================' -ForegroundColor Cyan
+    Write-Host 'MERCENARIES DEBUG XBE RECOMPILATION PROFILE' -ForegroundColor Cyan
+    Write-Host '================================================================' -ForegroundColor Cyan
+    Write-Host "Game directory: $GameRoot"
+    Write-Host "Input XBE:      $XbePath"
+    Write-Host "Analysis:       $AnalysisRoot"
+    Write-Host "Generated C:    $GeneratedRoot"
+
+    Write-Host ''
+    Write-Host '---- Parsing debug XBE metadata ----' -ForegroundColor Cyan
+    $ParserArgs = @('-m','tools.xbe_parser',$XbePath,'--json',$XbeJson,'--quiet')
+    Invoke-Python @ParserArgs
+    $Metadata = Get-JsonFile $XbeJson
+    if ($Metadata.type -ne 'debug') {
+        throw "The selected default.xbe is not debug-encoded according to the XBE parser (type='$($Metadata.type)')."
+    }
+    $EntryPoint = [string]$Metadata.entry_point
+    $BinaryHash = (Get-FileHash -LiteralPath $XbePath -Algorithm SHA256).Hash.ToUpperInvariant()
+    Write-Host "[OK] Debug XBE detected. Entry point: $EntryPoint" -ForegroundColor Green
+    Write-Host "[INFO] Input SHA-256: $BinaryHash"
+
+    Write-Host ''
+    Write-Host '---- Applying debug-only source/runtime profile ----' -ForegroundColor Cyan
+    $ProfileArgs = @($ProfilePatcher,'--repo-root',$RepoRoot,'--xbe-json',$XbeJson,'--game-dir',$GameRoot)
+    Invoke-Python @ProfileArgs
+
+    $SummaryPath = Join-Path $DisasmRoot 'summary.json'
+    $FunctionsPath = Join-Path $DisasmRoot 'functions.json'
+    $LabelsPath = Join-Path $DisasmRoot 'labels.json'
+    $StringsPath = Join-Path $DisasmRoot 'strings.json'
+    $XrefsPath = Join-Path $DisasmRoot 'xrefs.json'
+    $IdentifiedPath = Join-Path $FuncIdRoot 'identified_functions.json'
+
+    $ReuseAnalysis = Test-CompletedDebugAnalysis -BinaryHash $BinaryHash -EntryPoint $EntryPoint `
+        -MetadataPath $XbeJson -SummaryPath $SummaryPath -FunctionsPath $FunctionsPath `
+        -LabelsPath $LabelsPath -StringsPath $StringsPath -XrefsPath $XrefsPath `
+        -IdentifiedPath $IdentifiedPath
+
+    if ($ReuseAnalysis) {
+        Write-Host '[CACHE HIT] Reusing the already-completed 8-pass analysis for this exact debug.xbe.' -ForegroundColor Green
+        Write-Host '[CACHE HIT] The previous 32-minute disassembly is not repeated.' -ForegroundColor Green
+    }
+    else {
+        Write-Host '[CACHE MISS] No matching completed debug analysis was found; starting the debug-only analysis.' -ForegroundColor Yellow
+        # Keep any earlier disassembly, classification, or lift output intact
+        # before the fresh debug pass overwrites those folders.
+        $AnalysisStamp = Get-Date -Format 'yyyyMMdd-HHmmss'
+        foreach ($AnalysisFolder in @($DisasmRoot,$FuncIdRoot,$RecompRoot)) {
+            if (Test-Path -LiteralPath $AnalysisFolder -PathType Container) {
+                $FolderItems = @(Get-ChildItem -LiteralPath $AnalysisFolder -Force)
+                if ($FolderItems.Count -gt 0) {
+                    $FolderBackup = $AnalysisFolder + '.backup-' + $AnalysisStamp
+                    Move-Item -LiteralPath $AnalysisFolder -Destination $FolderBackup
+                    Write-Host "[BACKUP] Previous analysis preserved at $FolderBackup" -ForegroundColor Yellow
+                }
+            }
+        }
+        if (Test-Path -LiteralPath $ManualSeeds) {
+            $ManualSeedsBackup = $ManualSeeds + '.backup'
+            if (-not (Test-Path -LiteralPath $ManualSeedsBackup)) {
+                Copy-Item -LiteralPath $ManualSeeds -Destination $ManualSeedsBackup
+            }
+        }
+        # Do not feed the retail manual seeds into the debug binary.
+        [IO.File]::WriteAllText($ManualSeeds, "[]`r`n", [Text.UTF8Encoding]::new($false))
+        $SeedPath = $ManualSeeds
+        $Converged = $false
+        if ($MaxPasses -gt 8) { $MaxPasses = 8 }
+
+        for ($Pass = 1; $Pass -le $MaxPasses; $Pass++) {
+            Write-Host ""
+            Write-Host "Debug analysis pass $Pass of $MaxPasses..." -ForegroundColor Cyan
+            $InputSeedHash = (Get-FileHash -LiteralPath $SeedPath -Algorithm SHA256).Hash
+
+            $DisasmArgs = @(
+                '-m','tools.disasm',$XbePath,
+                '-o',$DisasmRoot,
+                '--analysis-json',$XbeJson,
+                '--extra-sections','XMV,XACTENG,D3D,XGRPH,DSOUND,WMADEC,XPP,DOLBY,XGRAPHCD,DSOUNDD,D3D8D',
+                '--seed-functions',$SeedPath,
+                '--protected-seed-functions',$ManualSeeds,
+                '--force'
+            )
+            Invoke-Python @DisasmArgs
+
+            $IdentifyArgs = @(
+                '-m','tools.func_id',$XbePath,
+                '--functions',$FunctionsPath,
+                '--strings',$StringsPath,
+                '--xrefs',$XrefsPath,
+                '-o',$FuncIdRoot
+            )
+            Invoke-Python @IdentifyArgs
+
+            & $MergeScript -FunctionsPath $FunctionsPath `
+                -IdentifiedPath $IdentifiedPath `
+                -ManualSeedsPath $ManualSeeds `
+                -OutputPath $MergedSeeds
+            if ($LASTEXITCODE -ne 0) { throw "Function-seed merge failed with exit code $LASTEXITCODE." }
+
+            $ParsedFunctions = Get-JsonFile $FunctionsPath
+            $ParsedSeeds = Get-JsonFile $MergedSeeds
+            $OutputSeedHash = (Get-FileHash -LiteralPath $MergedSeeds -Algorithm SHA256).Hash
+            Write-Host ("Detected {0} functions and retained {1} debug entry seeds." -f @($ParsedFunctions).Count, @($ParsedSeeds).Count)
+            if ($OutputSeedHash -eq $InputSeedHash) {
+                $Converged = $true
+                break
+            }
+            $SeedPath = $MergedSeeds
+        }
+
+        if (-not $Converged) {
+            Write-Warning "Debug function discovery did not converge after $MaxPasses passes. Continuing with the latest output, but the function map may be incomplete."
+        }
+        if (-not (Test-Path -LiteralPath $SummaryPath -PathType Leaf) -or
+            -not (Test-Path -LiteralPath $FunctionsPath -PathType Leaf) -or
+            -not (Test-Path -LiteralPath $IdentifiedPath -PathType Leaf)) {
+            throw 'Debug analysis did not produce the required disassembly/function-identification outputs.'
+        }
+        $Stamp = [ordered]@{
+            xbe_sha256 = $BinaryHash
+            xbe_type = $Metadata.type
+            entry_point = $EntryPoint
+            analysis_passes = $Pass
+            converged = $Converged
+            created_utc = [DateTime]::UtcNow.ToString('o')
+        }
+        $StampPath = Join-Path $AnalysisRoot 'debug-analysis-stamp.json'
+        [IO.File]::WriteAllText($StampPath, ($Stamp | ConvertTo-Json -Depth 4), [Text.UTF8Encoding]::new($false))
+    }
+
+    # Keep previous lift summaries before the debug C-generation pass replaces them.
+    if (Test-Path -LiteralPath $RecompRoot -PathType Container) {
+        $OldLiftFiles = @(Get-ChildItem -LiteralPath $RecompRoot -Force)
+        if ($OldLiftFiles.Count -gt 0) {
+            $OldLiftBackup = $RecompRoot + '.backup-' + (Get-Date -Format 'yyyyMMdd-HHmmss')
+            Move-Item -LiteralPath $RecompRoot -Destination $OldLiftBackup
+            Write-Host "[BACKUP] Previous lift output preserved at: $OldLiftBackup" -ForegroundColor Yellow
+        }
+    }
+
+    # Preserve the last generated tree before the new XBE replaces it.
+    if (Test-Path -LiteralPath $GeneratedRoot -PathType Container) {
+        $ExistingGenerated = @(Get-ChildItem -LiteralPath $GeneratedRoot -Force)
+        if ($ExistingGenerated.Count -gt 0) {
+            $BackupGenerated = $GeneratedRoot + '.backup-' + (Get-Date -Format 'yyyyMMdd-HHmmss')
+            Move-Item -LiteralPath $GeneratedRoot -Destination $BackupGenerated
+            Write-Host "[BACKUP] Previous generated C preserved at: $BackupGenerated" -ForegroundColor Yellow
+        }
+    }
+    New-Item -ItemType Directory -Force -Path $GeneratedRoot | Out-Null
+
+    Write-Host ''
+    Write-Host '---- Lifting debug functions to C (retail ranges/manual overrides disabled) ----' -ForegroundColor Cyan
+    $RecompArgs = @(
+        '-m','tools.recomp',$XbePath,
+        '--all',
+        '--split','1000',
+        '--gen-dir',$GeneratedRoot,
+        '--disasm-dir',$DisasmRoot,
+        '--func-id-dir',$FuncIdRoot,
+        '-o',$RecompRoot
+    )
+    Invoke-Python @RecompArgs
+
+    Write-Host ''
+    Write-Host '---- Validating debug entry point and debug-only compatibility stubs ----' -ForegroundColor Cyan
+    $GeneratedArgs = @($GeneratedPatcher,'--repo-root',$RepoRoot,'--xbe-json',$XbeJson,'--generated-root',$GeneratedRoot)
+    Invoke-Python @GeneratedArgs
+
+    $RecompSummary = Get-JsonFile (Join-Path $RecompRoot 'summary.json')
+    Write-Host ''
+    Write-Host ("Debug lift complete: {0}/{1} functions, {2} failures, {3} unresolved direct targets." -f `
+        $RecompSummary.translated, $RecompSummary.total, $RecompSummary.failed, $RecompSummary.unresolved_stubs) -ForegroundColor Green
+
+    $Dispatch = Join-Path $GeneratedRoot 'recomp_dispatch.c'
+    $Header = Join-Path $GeneratedRoot 'recomp_funcs.h'
+    if (-not (Test-Path -LiteralPath $Dispatch -PathType Leaf)) { throw "Debug recompiler did not create $Dispatch" }
+    if (-not (Test-Path -LiteralPath $Header -PathType Leaf)) { throw "Debug recompiler did not create $Header" }
+
+    Write-Host ''
+    Write-Host '[OK] Debug XBE C-source generation completed.' -ForegroundColor Green
+    Write-Host '[NOTE] A successful native compile is not yet proof that every debug-XDK import or developer feature is supported at runtime.' -ForegroundColor Yellow
+}
+finally {
+    Pop-Location
+}
