@@ -1,5 +1,0 @@
-Mode: ExtractedDirectory
-Source: C:\strikeburn\delta\EssentialDevFiles
-Files found: 57524
-Candidate vehicle-related files: 2207
-Vehicle layer count: 5

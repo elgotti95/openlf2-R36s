@@ -1,5 +1,0 @@
-Final_Editor_And_Projects_Folders/Editor/BUILD/DATA/MAP/DESIGN/TEMPLATE/template_vehicles.lyr
-Final_Editor_And_Projects_Folders/Editor/BUILD/DATA/MAP/DESIGN/TEMPLATE/template_vehicles_ch1.LYR
-Final_Editor_And_Projects_Folders/Editor/BUILD/DATA/MAP/DESIGN/TEMPLATE/template_vehicles_ch2.lyr
-Final_Editor_And_Projects_Folders/Editor/BUILD/DATA/MAP/DESIGN/TEMPLATE/template_vehicles_ch3.LYR
-Final_Editor_And_Projects_Folders/Editor/BUILD/DATA/MAP/DESIGN/TEMPLATE/template_vehicles_ch4.lyr
